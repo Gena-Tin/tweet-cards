@@ -1,0 +1,16 @@
+.filterSelect {
+  font-size: 16px;
+  font-weight: 600;
+  color: #373737;
+  background: #ebd8ff;
+  padding: 6px 10px 6px 10px;
+  border-radius: 10.3108px;
+  cursor: pointer;
+}
+
+.filterSelect:focus {
+  outline: none;
+}
+.filterSelect:hover {
+  box-shadow: 5px 7px 27px -2px rgba(0, 0, 0, 0.54);
+}

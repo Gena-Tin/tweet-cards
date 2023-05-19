@@ -4,6 +4,7 @@ import UserCard from "../../components/UserCard/UserCard";
 import TweetFilter from "../../components/TweetFilter/TweetFilter";
 import { getUsers, updateUser } from "../../api/Api";
 import ScrollButton from "../../components/ScrollButton/ScrollButton";
+import css from "./Tweets.module.css";
 
 const Tweets = () => {
   const [users, setUsers] = useState([]);
@@ -72,22 +73,24 @@ const Tweets = () => {
 
   return (
     <div>
-      <h2>Tweets</h2>
-      <Link to="/" className="back-button">
-        Back
-      </Link>
-      <TweetFilter filter={filter} onChange={handleFilterChange} />
-      <div className="user-list">
+      <h2 className={css.title}>Tweets</h2>
+      <div className={css.navSection}>
+        <Link to="/">
+          <button className={css.backButton}>&#11164; Back</button>
+        </Link>
+        <TweetFilter filter={filter} onChange={handleFilterChange} />
+      </div>
+      <div className={css.userList}>
         {filteredUsers.slice(0, visibleUsers).map((user) => (
           <UserCard key={user.id} user={user} onFollow={handleFollow} />
         ))}
       </div>
       {visibleUsers < filteredUsers.length ? (
-        <button className="load-more-button" onClick={handleLoadMore}>
-          Load More
+        <button className={css.loadMoreButton} onClick={handleLoadMore}>
+          Load More &#11167;
         </button>
       ) : (
-        <p className="end-of-list">End of List</p>
+        <h2 className={css.endOfList}>End of List</h2>
       )}
       <ScrollButton />
     </div>
