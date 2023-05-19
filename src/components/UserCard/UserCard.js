@@ -8,10 +8,19 @@ import avatarFrame from "./images/avatar_circle.png";
 
 const UserCard = ({ user, onFollow }) => {
   const [isFollowed, setIsFollowed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     setIsFollowed(localStorage.getItem(user.id) === "true");
   }, [user.id]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const handleFollow = () => {
     const updatedFollowed = !isFollowed;
@@ -29,9 +38,15 @@ const UserCard = ({ user, onFollow }) => {
       <img className={css.logo} src={logo} alt="logo" />
       <img className={css.hLine} src={line} alt="line" />
       <img className={css.avatar} src={user.avatar} alt={user.user} />
-      <img className={css.avatarFrame} src={avatarFrame} alt="avatarFrame" />
+      <img
+        className={css.avatarFrame}
+        src={avatarFrame}
+        alt="avatarFrame"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      />
 
-      {/* <h3 className={css.userName}>{user.user}</h3> */}
+      {isHovered && <div className={css.userName}>{user.user}</div>}
       <p className={css.tweets}> {user.tweets} Tweets</p>
       <p className={css.followers}>
         {numberWithCommas(user.followers)} Followers

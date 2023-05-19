@@ -5,18 +5,21 @@ import TweetFilter from "../../components/TweetFilter/TweetFilter";
 import { getUsers, updateUser } from "../../api/Api";
 import ScrollButton from "../../components/ScrollButton/ScrollButton";
 import css from "./Tweets.module.css";
+import Loader from "../../components/Loader/Loader";
 
 const Tweets = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [filter, setFilter] = useState("show all");
   const [visibleUsers, setVisibleUsers] = useState(3);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const data = await getUsers();
       setUsers(data);
       applyFilter(filter, data);
+      setIsLoading(false);
     };
 
     fetchUsers();
@@ -80,6 +83,7 @@ const Tweets = () => {
         </Link>
         <TweetFilter filter={filter} onChange={handleFilterChange} />
       </div>
+      {isLoading && <Loader />}
       <div className={css.userList}>
         {filteredUsers.slice(0, visibleUsers).map((user) => (
           <UserCard key={user.id} user={user} onFollow={handleFollow} />

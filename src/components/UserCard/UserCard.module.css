@@ -51,9 +51,24 @@
 }
 
 .userName {
+  width: 50%;
   position: absolute;
-  top: 178px;
-  left: 150px;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 5px 7px 27px -2px rgba(0, 0, 0, 0.54);
+
+  background-color: #8477d9;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: uppercase;
+
+  color: #ebd8ff;
 }
 
 .tweets {
@@ -113,6 +128,7 @@
 }
 .followButton:hover {
   box-shadow: 5px 7px 27px -2px rgba(0, 0, 0, 0.54);
+  color: #5736a3;
 }
 .followed {
   background: #5cd3a8;

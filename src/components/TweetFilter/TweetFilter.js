@@ -4,7 +4,6 @@ import css from "./TweetFilter.module.css";
 const TweetFilter = ({ filter, onChange }) => {
   return (
     <div className="tweet-filter">
-      {/* <label htmlFor="filter-select">Filter:</label> */}
       <select
         className={css.filterSelect}
         id="filter-select"
