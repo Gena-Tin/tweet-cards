@@ -25,4 +25,4 @@ This is a sample application built using React for creating a social media platf
 2. Install dependencies: `npm install`
 3. Start the development server: `npm start`
 4. Open the application in your browser: `http://localhost:3000`
-5. Or make your life easier and just go to the live page: `https://gena-tin.github.io/tweet-cards/`
+5. Or make your life easier and just go to the live page: `https://tweets-cards.netlify.app/`
