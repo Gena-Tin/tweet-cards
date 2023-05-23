@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import css from "./ScrollButton.module.css";
+import { TfiAngleUp } from "react-icons/tfi";
 
 const ScrollButton = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -26,7 +27,7 @@ const ScrollButton = () => {
     <>
       {showScrollButton && (
         <button className={css.scrollButton} onClick={handleScrollToTop}>
-          &#11165;
+          <TfiAngleUp />
         </button>
       )}
     </>

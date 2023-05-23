@@ -6,6 +6,7 @@ import { getUsers, updateUser } from "../../api/Api";
 import ScrollButton from "../../components/ScrollButton/ScrollButton";
 import css from "./Tweets.module.css";
 import Loader from "../../components/Loader/Loader";
+import { TfiHome, TfiReload } from "react-icons/tfi";
 
 const Tweets = () => {
   const [users, setUsers] = useState([]);
@@ -79,7 +80,9 @@ const Tweets = () => {
       <h2 className={css.title}>Tweets</h2>
       <div className={css.navSection}>
         <Link to="/">
-          <button className={css.backButton}>&#11164; Back</button>
+          <button className={css.backButton}>
+            <TfiHome /> Back
+          </button>
         </Link>
         <TweetFilter filter={filter} onChange={handleFilterChange} />
       </div>
@@ -91,7 +94,7 @@ const Tweets = () => {
       </div>
       {visibleUsers < filteredUsers.length ? (
         <button className={css.loadMoreButton} onClick={handleLoadMore}>
-          Load More &#11167;
+          Load More <TfiReload />
         </button>
       ) : (
         <h2 className={css.endOfList}>End of List</h2>
