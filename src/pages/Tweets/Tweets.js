@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import UserCard from "../../components/UserCard/UserCard";
 import TweetFilter from "../../components/TweetFilter/TweetFilter";
@@ -14,6 +14,39 @@ const Tweets = () => {
   const [filter, setFilter] = useState("show all");
   const [visibleUsers, setVisibleUsers] = useState(3);
   const [isLoading, setIsLoading] = useState(true);
+  const [follows, setFollows] = useState([]);
+
+  useEffect(() => {
+    const storedFollows = JSON.parse(localStorage.getItem("myFollows"));
+    if (storedFollows) {
+      setFollows(storedFollows);
+    }
+  }, []);
+
+  const applyFilter = useCallback(
+    (filter, data) => {
+      let filteredData = [];
+
+      switch (filter) {
+        case "follow":
+          filteredData = data.filter((user) =>
+            follows.some((follow) => follow.id === user.id)
+          );
+          break;
+        case "followings":
+          filteredData = data.filter(
+            (user) => !follows.some((follow) => follow.id === user.id)
+          );
+          break;
+        default:
+          filteredData = data;
+          break;
+      }
+
+      setFilteredUsers(filteredData);
+    },
+    [follows]
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,47 +57,25 @@ const Tweets = () => {
     };
 
     fetchUsers();
-  }, [filter]);
+  }, [filter, applyFilter]);
 
-  const handleFollow = async (userId, isFollowed) => {
-    const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        user.followers += isFollowed ? 1 : -1;
-        updateUser(user.id, user);
-        if (isFollowed) {
-          localStorage.setItem(user.id, "true");
-        } else {
-          localStorage.removeItem(user.id);
+  const handleFollow = useCallback(
+    (userId, isFollowed, updatedFollows) => {
+      const updatedUsers = users.map((user) => {
+        if (user.id === userId) {
+          user.followers += isFollowed ? 1 : -1;
+          updateUser(user.id, user);
         }
-      }
-      return user;
-    });
+        return user;
+      });
 
-    setUsers(updatedUsers);
-    applyFilter(filter, updatedUsers);
-  };
-
-  const applyFilter = (filter, data) => {
-    let filteredData = [];
-
-    switch (filter) {
-      case "follow":
-        filteredData = data.filter(
-          (user) => localStorage.getItem(user.id) === "true"
-        );
-        break;
-      case "followings":
-        filteredData = data.filter(
-          (user) => localStorage.getItem(user.id) !== "true"
-        );
-        break;
-      default:
-        filteredData = data;
-        break;
-    }
-
-    setFilteredUsers(filteredData);
-  };
+      setUsers(updatedUsers);
+      setFollows(updatedFollows);
+      localStorage.setItem("myFollows", JSON.stringify(updatedFollows));
+      applyFilter(filter, updatedUsers);
+    },
+    [users, filter, applyFilter]
+  );
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -89,7 +100,12 @@ const Tweets = () => {
       {isLoading && <Loader />}
       <div className={css.userList}>
         {filteredUsers.slice(0, visibleUsers).map((user) => (
-          <UserCard key={user.id} user={user} onFollow={handleFollow} />
+          <UserCard
+            key={user.id}
+            user={user}
+            onFollow={handleFollow}
+            follows={follows}
+          />
         ))}
       </div>
       {visibleUsers < filteredUsers.length ? (
